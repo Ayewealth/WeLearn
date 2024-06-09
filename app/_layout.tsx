@@ -6,7 +6,11 @@ import "react-native-reanimated";
 
 import { StatusBar } from "expo-status-bar";
 
-import { AuthContext, AuthContextProvider } from "../context/AuthContext";
+import {
+  AuthContext,
+  AuthContextProvider,
+  useAuth,
+} from "../context/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { FontAwesome } from "@expo/vector-icons";
 import React from "react";
@@ -20,13 +24,15 @@ const InitialLayout = () => {
 
   const [seenScreen, setSeenScreen] = useState<boolean | any>(false);
   const {
-    isAuthenticated,
     isParent,
     isInstructor,
     setIsInstructor,
     setIsAuthenticated,
     setIsParent,
+    setAuthTokens,
   } = useContext(AuthContext);
+
+  const { isAuthenticated } = useAuth();
 
   const getScreen = async () => {
     try {
@@ -34,10 +40,12 @@ const InitialLayout = () => {
       const instructor = await AsyncStorage.getItem("isInstructor");
       const parent = await AsyncStorage.getItem("isParent");
       const auth = await AsyncStorage.getItem("isAuthenticated");
+      const token = await AsyncStorage.getItem("authTokens");
       setSeenScreen(jsonValue);
       setIsInstructor(instructor);
       setIsParent(parent);
       setIsAuthenticated(auth);
+      setAuthTokens(token);
     } catch (error) {
       alert(error);
       console.log(error);
@@ -54,6 +62,8 @@ const InitialLayout = () => {
   }, []);
 
   useEffect(() => {
+    if (typeof isAuthenticated == "undefined") return;
+
     const inTabsGroup = segments[0] === "(app)";
 
     if (isAuthenticated && !inTabsGroup && isParent) {

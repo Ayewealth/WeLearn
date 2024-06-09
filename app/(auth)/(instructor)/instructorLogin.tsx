@@ -17,6 +17,7 @@ import Animated, { FadeInLeft, FadeOutRight } from "react-native-reanimated";
 import { jwtDecode } from "jwt-decode";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthContext } from "@/context/AuthContext";
+import { StatusBar } from "expo-status-bar";
 
 const instructorLogin = () => {
   const [email, setEmail] = useState("");
@@ -51,7 +52,6 @@ const instructorLogin = () => {
         setAuthTokens(data);
         setUser(jwtDecode(data.access));
         await AsyncStorage.setItem("authTokens", JSON.stringify(data));
-        await AsyncStorage.setItem("isInstructor", JSON.stringify(true));
         await AsyncStorage.setItem("isAuthenticated", JSON.stringify(true));
         router.replace("/(app)/(instructor)/");
       } else {
@@ -67,6 +67,7 @@ const instructorLogin = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar style="dark" />
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={{ flex: 1, marginTop: 80, paddingHorizontal: 20 }}

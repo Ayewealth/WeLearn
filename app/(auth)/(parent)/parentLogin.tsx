@@ -25,8 +25,11 @@ const parentLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  console.log(email, password);
+
   const router = useRouter();
-  const { authTokens, setAuthTokens, user, setUser } = useContext(AuthContext);
+  const { authTokens, setAuthTokens, user, setUser, setIsParent } =
+    useContext(AuthContext);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -52,11 +55,11 @@ const parentLogin = () => {
         setAuthTokens(data);
         setUser(jwtDecode(data.access));
         await AsyncStorage.setItem("authTokens", JSON.stringify(data));
-        await AsyncStorage.setItem("isParent", JSON.stringify(true));
         await AsyncStorage.setItem("isAuthenticated", JSON.stringify(true));
         router.replace("/(app)/(parent)/");
       } else {
         alert(response.statusText);
+        console.log(data);
       }
     } catch (error) {
       alert(error);
