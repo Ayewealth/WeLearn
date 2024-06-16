@@ -25,8 +25,6 @@ const parentLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  console.log(email, password);
-
   const router = useRouter();
   const { authTokens, setAuthTokens, user, setUser, setIsParent } =
     useContext(AuthContext);
@@ -52,14 +50,15 @@ const parentLogin = () => {
       const data = await response.json();
 
       if (response.ok || response.status === 200) {
+        const decode = jwtDecode(data.access);
         setAuthTokens(data);
-        setUser(jwtDecode(data.access));
+        setUser(decode);
         await AsyncStorage.setItem("authTokens", JSON.stringify(data));
+        await AsyncStorage.setItem("decodedAccess", JSON.stringify(decode));
         await AsyncStorage.setItem("isAuthenticated", JSON.stringify(true));
         router.replace("/(app)/(parent)/");
       } else {
-        alert(response.statusText);
-        console.log(data);
+        alert(data);
       }
     } catch (error) {
       alert(error);

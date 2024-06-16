@@ -18,25 +18,25 @@ const ParentLayout = () => {
   const { getLoginStudent, getAllTutors, tutors, userDetails } =
     useContext(AuthContext);
 
-  const prevTutorsRef = useRef();
+  // const prevTutorsRef = useRef();
 
   useEffect(() => {
     getLoginStudent();
     getAllTutors();
   }, []);
 
-  useEffect(() => {
-    prevTutorsRef.current = tutors;
+  // useEffect(() => {
+  //   prevTutorsRef.current = tutors;
 
-    if (
-      prevTutorsRef.current &&
-      JSON.stringify(prevTutorsRef.current) !== JSON.stringify(tutors)
-    ) {
-      getLoginStudent();
-      getAllTutors();
-    }
-    prevTutorsRef.current = tutors;
-  }, [tutors]);
+  //   if (
+  //     prevTutorsRef.current &&
+  //     JSON.stringify(prevTutorsRef.current) !== JSON.stringify(tutors)
+  //   ) {
+  //     getLoginStudent();
+  //     getAllTutors();
+  //   }
+  //   prevTutorsRef.current = tutors;
+  // }, [tutors]);
 
   const ToggleDrawer = () => {
     navigation.dispatch(DrawerActions.toggleDrawer());
@@ -176,12 +176,19 @@ const ParentLayout = () => {
         />
 
         <Drawer.Screen
-          name="profile"
+          name="instructor/[id]"
           options={{
-            drawerLabel: "",
+            drawerItemStyle: { display: "none" },
+            headerShown: false,
+          }}
+        />
+        <Drawer.Screen
+          name="instructor/edit"
+          options={{
+            drawerItemStyle: { display: "none" },
+            headerShown: false,
             headerTitle: "",
             headerTransparent: true,
-            drawerItemStyle: { display: "none" },
             headerLeft: () => (
               <TouchableOpacity
                 onPress={() => navigate.back()}
@@ -190,14 +197,6 @@ const ParentLayout = () => {
                 <MaterialIcons name="arrow-back-ios" size={24} color="black" />
               </TouchableOpacity>
             ),
-          }}
-        />
-
-        <Drawer.Screen
-          name="instructor/[id]"
-          options={{
-            drawerItemStyle: { display: "none" },
-            headerShown: false,
           }}
         />
       </Drawer>

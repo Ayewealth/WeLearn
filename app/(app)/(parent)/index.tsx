@@ -189,12 +189,13 @@ export default function HomeScreen() {
 
         <Animated.View
           entering={FadeInLeft.duration(400).delay(200)}
+          exiting={FadeOutRight.duration(200).delay(200)}
           style={{ flexDirection: "column", gap: 20 }}
         >
           <Text
             style={{ fontFamily: "AvenirDemi", fontSize: 19, lineHeight: 25 }}
           >
-            Welcome Back, {userDetails.user?.name || "Kingsley"}
+            Welcome Back, {userDetails.user?.name || "John Doe"}
           </Text>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
             <View style={{ flex: 0.98, position: "relative" }}>
@@ -247,7 +248,7 @@ export default function HomeScreen() {
                     onRefresh={onRefresh}
                   />
                 }
-                entering={FadeInLeft.duration(400).delay(300)}
+                entering={FadeInLeft.duration(400).delay(200)}
                 exiting={FadeOutRight.duration(200).delay(200)}
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}

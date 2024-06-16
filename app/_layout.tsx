@@ -29,7 +29,6 @@ const InitialLayout = () => {
     setIsInstructor,
     setIsAuthenticated,
     setIsParent,
-    setAuthTokens,
   } = useContext(AuthContext);
 
   const { isAuthenticated } = useAuth();
@@ -40,12 +39,10 @@ const InitialLayout = () => {
       const instructor = await AsyncStorage.getItem("isInstructor");
       const parent = await AsyncStorage.getItem("isParent");
       const auth = await AsyncStorage.getItem("isAuthenticated");
-      const token = await AsyncStorage.getItem("authTokens");
       setSeenScreen(jsonValue);
       setIsInstructor(instructor);
       setIsParent(parent);
       setIsAuthenticated(auth);
-      setAuthTokens(token);
     } catch (error) {
       alert(error);
       console.log(error);

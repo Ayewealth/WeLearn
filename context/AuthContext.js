@@ -17,18 +17,20 @@ export const AuthContextProvider = ({ children }) => {
   const [userDetails, setUserDetails] = useState([]);
   const [tutors, setTutors] = useState([]);
 
-  console.log(authTokens);
-
   const navigate = useRouter();
+  console.log(user);
 
   const loadAuthData = async () => {
     const storedAuthTokens = await AsyncStorage.getItem("authTokens");
+    const decodedAccess = await AsyncStorage.getItem("decodedAccess");
     if (storedAuthTokens) {
       const tokens = JSON.parse(storedAuthTokens);
       setAuthTokens(tokens);
-      setUser(jwtDecode(tokens.access));
-      setIsAuthenticated(true);
     }
+    if (decodedAccess) {
+      setUser(decodedAccess);
+    }
+    setIsAuthenticated(true);
   };
 
   useEffect(() => {
@@ -82,7 +84,6 @@ export const AuthContextProvider = ({ children }) => {
       );
 
       const data = await response.json();
-      console.log(data);
 
       if (response.ok) {
         setUserDetails(data);
