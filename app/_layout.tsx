@@ -31,6 +31,8 @@ const InitialLayout = () => {
     setIsParent,
   } = useContext(AuthContext);
 
+  // console.log(isParent);
+
   const { isAuthenticated } = useAuth();
 
   const getScreen = async () => {

@@ -1,5 +1,5 @@
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect } from "react";
 import { Drawer } from "expo-router/drawer";
 import { useNavigation, useRouter } from "expo-router";
 import { DrawerActions } from "@react-navigation/native";
@@ -18,29 +18,15 @@ const ParentLayout = () => {
   const { getLoginStudent, getAllTutors, tutors, userDetails } =
     useContext(AuthContext);
 
-  // const prevTutorsRef = useRef();
-
   useEffect(() => {
     getLoginStudent();
     getAllTutors();
-  }, []);
-
-  // useEffect(() => {
-  //   prevTutorsRef.current = tutors;
-
-  //   if (
-  //     prevTutorsRef.current &&
-  //     JSON.stringify(prevTutorsRef.current) !== JSON.stringify(tutors)
-  //   ) {
-  //     getLoginStudent();
-  //     getAllTutors();
-  //   }
-  //   prevTutorsRef.current = tutors;
-  // }, [tutors]);
+  }, [userDetails, tutors]);
 
   const ToggleDrawer = () => {
     navigation.dispatch(DrawerActions.toggleDrawer());
   };
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Drawer
@@ -197,6 +183,20 @@ const ParentLayout = () => {
                 <MaterialIcons name="arrow-back-ios" size={24} color="black" />
               </TouchableOpacity>
             ),
+          }}
+        />
+        <Drawer.Screen
+          name="instructor/hired/[id]"
+          options={{
+            drawerItemStyle: { display: "none" },
+            headerShown: false,
+          }}
+        />
+        <Drawer.Screen
+          name="instructor/paymentSuccess"
+          options={{
+            drawerItemStyle: { display: "none" },
+            headerShown: false,
           }}
         />
       </Drawer>

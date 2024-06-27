@@ -51,14 +51,22 @@ const parentLogin = () => {
 
       if (response.ok || response.status === 200) {
         const decode = jwtDecode(data.access);
-        setAuthTokens(data);
-        setUser(decode);
-        await AsyncStorage.setItem("authTokens", JSON.stringify(data));
-        await AsyncStorage.setItem("decodedAccess", JSON.stringify(decode));
-        await AsyncStorage.setItem("isAuthenticated", JSON.stringify(true));
-        router.replace("/(app)/(parent)/");
+
+        if (decode.user_type === "Student") {
+          setAuthTokens(data);
+          setUser(decode);
+          // await AsyncStorage.setItem("isInstructor", JSON.stringify(false));
+          await AsyncStorage.setItem("isParent", JSON.stringify(true));
+          await AsyncStorage.setItem("authTokens", JSON.stringify(data));
+          await AsyncStorage.setItem("decodedAccess", JSON.stringify(decode));
+          await AsyncStorage.setItem("isAuthenticated", JSON.stringify(true));
+          router.replace("/(app)/(parent)/");
+        } else {
+          alert("User Is Not A Student");
+        }
       } else {
-        alert(data);
+        alert(data.detail);
+        console.log(data);
       }
     } catch (error) {
       alert(error);

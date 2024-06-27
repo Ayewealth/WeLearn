@@ -11,6 +11,32 @@ const account = () => {
   const { top, bottom } = useSafeAreaInsets();
   const { userDetails } = useContext(AuthContext);
 
+  function formatDate(dateString: string): string {
+    const date = new Date(dateString);
+
+    const options: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
+    const formattedDate = date.toLocaleDateString("en-US", options);
+
+    const day = date.getDate();
+    let daySuffix: string;
+
+    if (day % 10 === 1 && day !== 11) {
+      daySuffix = "st";
+    } else if (day % 10 === 2 && day !== 12) {
+      daySuffix = "nd";
+    } else if (day % 10 === 3 && day !== 13) {
+      daySuffix = "rd";
+    } else {
+      daySuffix = "th";
+    }
+
+    return formattedDate.replace(day.toString(), `${day}${daySuffix}`);
+  }
+
   return (
     <SafeAreaView
       style={{
@@ -84,11 +110,17 @@ const account = () => {
           <Text style={{ fontFamily: "AvenirRegular", fontSize: 17 }}>
             {userDetails.user?.email}
           </Text>
-          <Text style={{ fontFamily: "AvenirRegular", fontSize: 17 }}>
+          <Text
+            style={{
+              fontFamily: "AvenirRegular",
+              fontSize: 17,
+              lineHeight: 30,
+            }}
+          >
             {userDetails.location}
           </Text>
           <Text style={{ fontFamily: "AvenirRegular", fontSize: 17 }}>
-            {userDetails.user?.date_joined}
+            {userDetails.user ? formatDate(userDetails.user.date_joined) : ""}
           </Text>
         </View>
       )}

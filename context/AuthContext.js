@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import jwtDecode from "jwt-decode";
+import isEqual from "lodash.isequal";
 
 const { createContext, useState, useEffect, useContext } = require("react");
 
@@ -16,9 +17,10 @@ export const AuthContextProvider = ({ children }) => {
 
   const [userDetails, setUserDetails] = useState([]);
   const [tutors, setTutors] = useState([]);
+  const [tutorClass, setTutorClass] = useState([]);
 
   const navigate = useRouter();
-  console.log(user);
+  // console.log(user);
 
   const loadAuthData = async () => {
     const storedAuthTokens = await AsyncStorage.getItem("authTokens");
@@ -56,11 +58,15 @@ export const AuthContextProvider = ({ children }) => {
       const data = await response.json();
 
       if (response.ok) {
-        setTutors(data);
-        setLoading(false);
-        console.log("Got Tutors Details");
+        const sortedTutors = data.sort((a, b) => b.is_verified - a.is_verified);
+
+        if (!isEqual(tutors, sortedTutors)) {
+          setTutors(sortedTutors);
+          console.log("Tutors updated");
+        } else {
+          console.log("Tutors are the same, no update needed");
+        }
       } else {
-        setLoading(false);
         console.log(data.detail);
       }
     } catch (error) {
@@ -73,7 +79,7 @@ export const AuthContextProvider = ({ children }) => {
   const getLoginStudent = async () => {
     try {
       let response = await fetch(
-        `https://welearnapi.fun/api/student-profiles/update/${user.profile_id}/`,
+        `https://welearnapi.fun/api/student-profiles/update/${user?.profile_id}/`,
         {
           method: "GET",
           headers: {
@@ -86,13 +92,79 @@ export const AuthContextProvider = ({ children }) => {
       const data = await response.json();
 
       if (response.ok) {
-        setUserDetails(data);
+        if (!isEqual(userDetails, data)) {
+          setUserDetails(data);
+          console.log("User updated");
+        } else {
+          console.log("User Details are the same, no update needed");
+        }
         console.log("Got User Details");
       } else {
         console.log(data.detail);
       }
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const getLoginTutor = async () => {
+    try {
+      let response = await fetch(
+        `https://welearnapi.fun/api/instructor-profiles/update/${user?.profile_id}/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authTokens.access}`,
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        if (!isEqual(userDetails, data)) {
+          setUserDetails(data);
+          console.log("User updated");
+        } else {
+          console.log("User Details are the same, no update needed");
+        }
+        console.log("Got User Details");
+      } else {
+        console.log(data.detail);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getAllTutorClass = async () => {
+    setLoading(true);
+    try {
+      let response = await fetch("https://welearnapi.fun/api/class-bookings/", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authTokens.access}`,
+        },
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        if (!isEqual(tutorClass, data)) {
+          setTutorClass(data);
+          console.log("TutorClass updated");
+        } else {
+          console.log("TutorClass are the same, no update needed");
+        }
+      } else {
+        console.log(data.detail);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -128,6 +200,11 @@ export const AuthContextProvider = ({ children }) => {
     getAllTutors,
     tutors,
     loading,
+
+    tutorClass,
+    setTutorClass,
+    getLoginTutor,
+    getAllTutorClass,
   };
 
   return (

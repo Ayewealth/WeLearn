@@ -34,11 +34,50 @@ import { Link } from "expo-router";
 export default function HomeScreen() {
   const [toggleFilter, setToggleFilter] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [nameFilter, setNameFilter] = useState(false);
+  const [courseFilter, setCourseFilter] = useState(false);
+  const [locationFilter, setLocationFilter] = useState(false);
+  const [filteredTutors, setFilteredTutors] = useState([]);
+
   const { top, bottom } = useSafeAreaInsets();
   const animation = useRef(null);
 
-  const { loading, tutors, getAllTutors, userDetails } =
+  const { loading, tutors, getAllTutors, getLoginStudent, userDetails } =
     useContext(AuthContext);
+
+  useEffect(() => {
+    applyFiltersAndSearch();
+  }, [nameFilter, courseFilter, locationFilter, searchTerm, tutors]);
+
+  const applyFiltersAndSearch = () => {
+    let result = tutors;
+
+    // Apply name filter
+    if (nameFilter) {
+      result = result.filter((tutor: { user: { name: string } }) =>
+        tutor.user.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    // Apply course filter
+    if (courseFilter) {
+      result = result.filter((tutor: { classes: any[] }) =>
+        tutor.classes.some((cls: { class_name: string }) =>
+          cls.class_name.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      );
+    }
+
+    // Apply location filter
+    if (locationFilter) {
+      result = result.filter((tutor: { location: string }) =>
+        tutor.location.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    setFilteredTutors(result);
+  };
 
   const handleToggleFilter = () => {
     setToggleFilter((prev) => !prev);
@@ -48,6 +87,7 @@ export default function HomeScreen() {
     setRefreshing(true);
     setTimeout(() => {
       getAllTutors();
+      getLoginStudent();
       setRefreshing(false);
     }, 1000);
   }, []);
@@ -117,6 +157,8 @@ export default function HomeScreen() {
                   fillColor="#000"
                   iconStyle={{ borderColor: "red", borderRadius: 5 }}
                   innerIconStyle={{ borderWidth: 2, borderRadius: 5 }}
+                  isChecked={nameFilter}
+                  onPress={() => setNameFilter(!nameFilter)}
                 />
               </View>
               <View
@@ -143,6 +185,8 @@ export default function HomeScreen() {
                   fillColor="#000"
                   iconStyle={{ borderColor: "red", borderRadius: 5 }}
                   innerIconStyle={{ borderWidth: 2, borderRadius: 5 }}
+                  isChecked={courseFilter}
+                  onPress={() => setCourseFilter(!courseFilter)}
                 />
               </View>
               <View
@@ -169,6 +213,8 @@ export default function HomeScreen() {
                   fillColor="#000"
                   iconStyle={{ borderColor: "red", borderRadius: 5 }}
                   innerIconStyle={{ borderWidth: 2, borderRadius: 5 }}
+                  isChecked={locationFilter}
+                  onPress={() => setLocationFilter(!locationFilter)}
                 />
               </View>
             </Animated.View>
@@ -201,6 +247,8 @@ export default function HomeScreen() {
             <View style={{ flex: 0.98, position: "relative" }}>
               <TextInput
                 placeholder="Search for tutor"
+                value={searchTerm}
+                onChangeText={setSearchTerm}
                 style={{
                   padding: 12,
                   borderRadius: 10,
@@ -227,7 +275,7 @@ export default function HomeScreen() {
           </View>
         </Animated.View>
 
-        {tutors && tutors.length > 0 ? (
+        {filteredTutors && filteredTutors.length > 0 ? (
           <>
             {loading ? (
               <View
@@ -253,7 +301,7 @@ export default function HomeScreen() {
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}
               >
-                {tutors.map((tutor: any) => (
+                {filteredTutors.map((tutor: any) => (
                   <View
                     key={tutor.id}
                     style={[
@@ -311,7 +359,7 @@ export default function HomeScreen() {
                           numberOfLines={1}
                           style={{ fontFamily: "AvenirRegular" }}
                         >
-                          {tutor.occupation || "Empty"}
+                          {tutor.classes[0]?.class_name || "Empty"}
                         </Text>
                       </View>
                     </View>
@@ -323,8 +371,7 @@ export default function HomeScreen() {
                       }}
                       numberOfLines={2}
                     >
-                      {tutor.bio_data ||
-                        "Meet Emily, Your Dedicated Tutor! With a passion for igniting young minds and a knack for making learning fun"}
+                      {tutor.bio_data || "N/A"}
                     </Text>
                     <Link
                       href={`/(app)/(parent)/instructor/${tutor.id}`}

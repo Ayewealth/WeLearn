@@ -1,15 +1,19 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { StatusBar } from "expo-status-bar";
 import Animated, { FadeInLeft, FadeOutRight } from "react-native-reanimated";
 import { Link } from "expo-router";
 
-const success = () => {
+const paymentSuccess = () => {
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar style="dark" />
-
+    <SafeAreaView
+      style={{
+        flex: 1,
+        paddingHorizontal: 20,
+        backgroundColor: "#FCFCFC",
+        width: "100%",
+      }}
+    >
       <Animated.View
         entering={FadeInLeft.duration(200).delay(200)}
         exiting={FadeOutRight.duration(200).delay(200)}
@@ -22,20 +26,27 @@ const success = () => {
         }}
       >
         <Image
-          source={require("../../../assets/images/success.png")}
+          source={require("../../../../assets/images/success.png")}
           style={{ width: 150, height: 150, objectFit: "contain" }}
         />
-        <Text style={{ fontFamily: "AvenirBold", fontSize: 28 }}>
-          Welcome to Welearn!
+        <Text
+          style={{
+            fontFamily: "AvenirBold",
+            fontSize: 30,
+            textAlign: "center",
+            lineHeight: 40,
+          }}
+        >
+          Payment Successfull
         </Text>
         <Text
           style={{
             color: "rgba(85, 85, 85, 1)",
             fontFamily: "AvenirDemi",
-            fontSize: 18,
+            fontSize: 16,
           }}
         >
-          Congratulations, You're In!
+          Class Booked
         </Text>
         <Text
           style={{
@@ -46,11 +57,10 @@ const success = () => {
             lineHeight: 30,
           }}
         >
-          Welcome to Welearn, where learning meets convenience. Start exploring
-          our diverse pool of tutors and empowering your child's educational
-          journey today!
+          Your payment was made successfully. You can start classes from the
+          selected day and time.
         </Text>
-        <Link replace href={"/(auth)/(parent)/parentLogin"} asChild>
+        <Link replace href={"/(app)/(parent)/allHiredTutors"} asChild>
           <TouchableOpacity
             style={{
               alignItems: "center",
@@ -67,7 +77,7 @@ const success = () => {
                 fontSize: 16,
               }}
             >
-              Proceed
+              Back
             </Text>
           </TouchableOpacity>
         </Link>
@@ -76,12 +86,4 @@ const success = () => {
   );
 };
 
-export default success;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 20,
-    width: "100%",
-  },
-});
+export default paymentSuccess;

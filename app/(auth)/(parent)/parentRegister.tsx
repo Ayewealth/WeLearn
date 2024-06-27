@@ -34,6 +34,7 @@ const parentRegister = () => {
   const [alert, setAlert] = useState(false);
   const [alertType, setAlertType] = useState("success");
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const router = useRouter();
   const animation = useRef(null);
@@ -44,7 +45,9 @@ const parentRegister = () => {
 
   const closeAlert = () => {
     setAlert(false);
-    router.replace("/(auth)/(parent)/otp");
+    if (success) {
+      router.push("/(auth)/(parent)/otp");
+    }
   };
 
   const handleSignup = async () => {
@@ -66,11 +69,13 @@ const parentRegister = () => {
       const data = await response.json();
 
       if (response.status === 201) {
+        setSuccess(true);
         setAlertType("success");
         setMessage(data.message);
         await AsyncStorage.setItem("userEmail", email);
         await AsyncStorage.setItem("isParent", JSON.stringify(true));
       } else {
+        setSuccess(false);
         setAlertType("error");
         setMessage(data.message);
       }

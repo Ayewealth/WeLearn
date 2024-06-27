@@ -1,5 +1,5 @@
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { Drawer } from "expo-router/drawer";
 import { useNavigation, useRouter } from "expo-router";
 import { DrawerActions } from "@react-navigation/native";
@@ -9,10 +9,20 @@ import { Image, TouchableOpacity } from "react-native";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { SimpleLineIcons } from "@expo/vector-icons";
+import { AuthContext } from "@/context/AuthContext";
 
 const InstructorLayout = () => {
   const navigate = useRouter();
   const navigation = useNavigation();
+
+  const { getLoginTutor, getAllTutorClass, tutorClass, userDetails, user } =
+    useContext(AuthContext);
+
+  useEffect(() => {
+    getLoginTutor();
+    getAllTutorClass();
+  }, [user]);
+  useEffect(() => {}, [userDetails, tutorClass]);
 
   const ToggleDrawer = () => {
     navigation.dispatch(DrawerActions.toggleDrawer());
@@ -49,16 +59,28 @@ const InstructorLayout = () => {
             ),
             headerRight: () => (
               <TouchableOpacity>
-                <Image
-                  source={require("../../../assets/images/profile.png")}
-                  style={{
-                    width: 40,
-                    height: 40,
-                    borderRadius: 50,
-                    backgroundColor: "#00C0EA",
-                    marginRight: 20,
-                  }}
-                />
+                {userDetails && userDetails.profile_pic ? (
+                  <Image
+                    source={{ uri: userDetails.profile_pic }}
+                    style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: 50,
+                      marginRight: 20,
+                    }}
+                  />
+                ) : (
+                  <Image
+                    source={require("../../../assets/images/profile.png")}
+                    style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: 50,
+                      backgroundColor: "#00C0EA",
+                      marginRight: 20,
+                    }}
+                  />
+                )}
               </TouchableOpacity>
             ),
           }}
@@ -78,10 +100,10 @@ const InstructorLayout = () => {
             headerTransparent: true,
             headerLeft: () => (
               <TouchableOpacity
-                onPress={ToggleDrawer}
+                onPress={() => navigate.back()}
                 style={{ marginLeft: 20 }}
               >
-                <MaterialIcons name="menu" size={30} color="black" />
+                <MaterialIcons name="arrow-back-ios" size={24} color="black" />
               </TouchableOpacity>
             ),
             drawerIcon: () => <Feather name="user" size={22} color="#00C0EA" />,
@@ -102,10 +124,10 @@ const InstructorLayout = () => {
             headerTransparent: true,
             headerLeft: () => (
               <TouchableOpacity
-                onPress={ToggleDrawer}
+                onPress={() => navigate.back()}
                 style={{ marginLeft: 20 }}
               >
-                <MaterialIcons name="menu" size={30} color="black" />
+                <MaterialIcons name="arrow-back-ios" size={24} color="black" />
               </TouchableOpacity>
             ),
             drawerIcon: () => (
@@ -128,10 +150,10 @@ const InstructorLayout = () => {
             headerTransparent: true,
             headerLeft: () => (
               <TouchableOpacity
-                onPress={ToggleDrawer}
+                onPress={() => navigate.back()}
                 style={{ marginLeft: 20 }}
               >
-                <MaterialIcons name="menu" size={30} color="black" />
+                <MaterialIcons name="arrow-back-ios" size={24} color="black" />
               </TouchableOpacity>
             ),
             drawerIcon: () => (
@@ -141,18 +163,26 @@ const InstructorLayout = () => {
         />
 
         <Drawer.Screen
-          name="profile"
+          name="parent/[id]"
           options={{
-            drawerLabel: "",
+            drawerItemStyle: { display: "none" },
+            headerShown: false,
+          }}
+        />
+
+        <Drawer.Screen
+          name="parent/edit"
+          options={{
+            drawerItemStyle: { display: "none" },
+            headerShown: false,
             headerTitle: "",
             headerTransparent: true,
-            drawerItemStyle: { display: "none" },
             headerLeft: () => (
               <TouchableOpacity
-                onPress={ToggleDrawer}
+                onPress={() => navigate.back()}
                 style={{ marginLeft: 20 }}
               >
-                <MaterialIcons name="menu" size={30} color="black" />
+                <MaterialIcons name="arrow-back-ios" size={24} color="black" />
               </TouchableOpacity>
             ),
           }}

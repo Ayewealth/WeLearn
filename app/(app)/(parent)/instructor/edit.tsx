@@ -1,4 +1,11 @@
-import { View, Text, Image, TouchableOpacity, TextInput } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  TextInput,
+  ActivityIndicator,
+} from "react-native";
 import React, { useContext, useState } from "react";
 import {
   SafeAreaView,
@@ -12,7 +19,8 @@ import { AuthContext } from "@/context/AuthContext";
 import Animated, { FadeInLeft, FadeOutRight } from "react-native-reanimated";
 
 const edit = () => {
-  const { userDetails } = useContext(AuthContext);
+  const { userDetails, user, authTokens, getLoginStudent } =
+    useContext(AuthContext);
 
   const [profilePic, setProfilePic] = useState(
     userDetails && userDetails ? userDetails.profile_pic : null
@@ -29,6 +37,87 @@ const edit = () => {
   const [date, setDate] = useState(
     userDetails && userDetails ? userDetails.user?.date_joined : ""
   );
+  const [loading, setLoading] = useState(false);
+
+  const updateName = async () => {
+    setLoading(true);
+
+    try {
+      let response = await fetch(
+        `https://welearnapi.fun/api/user/update/${user.user_id}/`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authTokens.access}`,
+          },
+          body: JSON.stringify({
+            name: name,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        getLoginStudent();
+        alert("User Name Updated");
+      } else {
+        console.log(data);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updateLocation = async () => {
+    setLoading(true);
+
+    const formData = new FormData();
+    formData.append("location", location);
+    if (profilePic) {
+      const profileFile: any = {
+        name: profilePic.fileName,
+        uri: profilePic.uri,
+        type: profilePic.mimeType,
+        size: profilePic.fileSize,
+      };
+      formData.append("profile_pic", profileFile);
+    }
+
+    try {
+      let response = await fetch(
+        `https://welearnapi.fun/api/student-profiles/update/${user.profile_id}/`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${authTokens.access}`,
+          },
+          body: formData,
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        getLoginStudent();
+        alert("User Name Updated");
+      } else {
+        console.log(data);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSubmit = async () => {
+    updateName();
+    updateLocation();
+  };
 
   const { top, bottom } = useSafeAreaInsets();
 
@@ -47,7 +136,7 @@ const edit = () => {
       });
 
       if (!result.canceled) {
-        saveProfile(result.assets[0].uri);
+        saveProfile(result.assets[0]);
       } else {
         alert("You did not select any image.");
       }
@@ -84,7 +173,10 @@ const edit = () => {
         <View style={{ flexDirection: "column", gap: 10 }}>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 2 }}>
             <Image
-              source={{ uri: profilePic }}
+              source={{
+                uri:
+                  typeof profilePic === "string" ? profilePic : profilePic?.uri,
+              }}
               style={{
                 width: 80,
                 height: 80,
@@ -176,6 +268,7 @@ const edit = () => {
                   fontSize: 15,
                   borderColor: "rgba(85, 85, 85, 0.3)",
                   borderWidth: 1,
+                  paddingRight: 45,
                 }}
               />
               <FontAwesome6
@@ -205,6 +298,7 @@ const edit = () => {
           </View>
 
           <TouchableOpacity
+            onPress={handleSubmit}
             style={{
               alignItems: "center",
               backgroundColor: "#00C0EA",
@@ -219,7 +313,7 @@ const edit = () => {
                 fontSize: 16,
               }}
             >
-              Save & Continue
+              {loading ? <ActivityIndicator color="#fff" /> : "Save & Continue"}
             </Text>
           </TouchableOpacity>
         </View>

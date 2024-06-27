@@ -49,13 +49,23 @@ const instructorLogin = () => {
       const data = await response.json();
 
       if (response.ok || response.status === 200) {
-        setAuthTokens(data);
-        setUser(jwtDecode(data.access));
-        await AsyncStorage.setItem("authTokens", JSON.stringify(data));
-        await AsyncStorage.setItem("isAuthenticated", JSON.stringify(true));
-        router.replace("/(app)/(instructor)/");
+        const decode = jwtDecode(data.access);
+
+        if (decode.user_type === "Instructor") {
+          setAuthTokens(data);
+          setUser(decode);
+          // await AsyncStorage.setItem("isParent", JSON.stringify(false));
+          await AsyncStorage.setItem("isInstructor", JSON.stringify(true));
+          await AsyncStorage.setItem("authTokens", JSON.stringify(data));
+          await AsyncStorage.setItem("decodedAccess", JSON.stringify(decode));
+          await AsyncStorage.setItem("isAuthenticated", JSON.stringify(true));
+          router.replace("/(app)/(instructor)/");
+        } else {
+          alert("User Is Not An Instructor");
+        }
       } else {
-        alert(response.statusText);
+        alert(data.detail);
+        console.log(data);
       }
     } catch (error) {
       alert(error);
