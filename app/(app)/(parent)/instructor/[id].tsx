@@ -462,7 +462,7 @@ const UnhiredTutorDetails = () => {
                 options={{
                   tx_ref: generateTransactionRef(10),
                   authorization:
-                    "FLWPUBK_TEST-b3956f75379a897725e831520773dc0f-X",
+                    "FLWPUBK_TEST-0d9c507643c89eea7ab4b15b9e1cc58d-X",
                   amount: DynamicTutor && DynamicTutor.classes[0]?.price,
                   currency: "NGN",
                   payment_options: "card, banktransfer, ussd",
