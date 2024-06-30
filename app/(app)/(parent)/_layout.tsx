@@ -15,13 +15,14 @@ const ParentLayout = () => {
   const navigate = useRouter();
   const navigation = useNavigation();
 
-  const { getLoginStudent, getAllTutors, tutors, userDetails } =
+  const { getLoginStudent, getAllTutors, tutors, userDetails, user } =
     useContext(AuthContext);
 
   useEffect(() => {
     getLoginStudent();
     getAllTutors();
-  }, [userDetails, tutors]);
+  }, [user]);
+  useEffect(() => {}, [userDetails, tutors]);
 
   const ToggleDrawer = () => {
     navigation.dispatch(DrawerActions.toggleDrawer());

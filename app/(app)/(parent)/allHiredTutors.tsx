@@ -295,9 +295,9 @@ const allHiredTutors = () => {
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}
               >
-                {filteredTutors.map((tutor: any) => (
+                {filteredTutors.map((tutor: any, index) => (
                   <View
-                    key={tutor.class_booked?.instructor?.id}
+                    key={index}
                     style={[
                       styles.shadowBox,
                       {

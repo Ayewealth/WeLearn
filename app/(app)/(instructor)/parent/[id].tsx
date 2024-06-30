@@ -45,7 +45,7 @@ const Student = () => {
     DynamicTutor &&
     DynamicTutor.hiredInstructors.find(
       (tutor: { class_booked: { instructor: { id: any } } }) =>
-        tutor.class_booked.instructor.id == user.profile_id
+        tutor.class_booked?.instructor?.id == user?.profile_id
     );
 
   function formatDate(dateString: string): string {
@@ -122,7 +122,7 @@ const Student = () => {
       if (response.ok) {
         const filteredRemarks = data.filter(
           (remark: any) =>
-            remark.student == id && remark.instructor === user?.profile_id
+            remark?.student == id && remark?.instructor === user?.profile_id
         );
 
         if (!isEqual(remarks, filteredRemarks)) {
@@ -153,7 +153,7 @@ const Student = () => {
             Authorization: `Bearer ${authTokens.access}`,
           },
           body: JSON.stringify({
-            instructor: user.profile_id,
+            instructor: user?.profile_id,
             student: id,
             content: remark,
           }),
@@ -349,7 +349,7 @@ const Student = () => {
                 )}
               </View>
               <Text numberOfLines={1} style={{ fontFamily: "AvenirRegular" }}>
-                {(DynamicTutor && DynamicTutor.user.email) || "Empty"}
+                {(DynamicTutor && DynamicTutor.user?.email) || "Empty"}
               </Text>
             </View>
           </View>
@@ -450,7 +450,7 @@ const Student = () => {
                   >
                     <Image
                       source={{
-                        uri: userDetails && userDetails.profile_pic,
+                        uri: userDetails && userDetails?.profile_pic,
                       }}
                       style={{
                         height: 40,

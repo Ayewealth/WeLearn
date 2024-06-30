@@ -67,7 +67,7 @@ const edit = () => {
 
       if (response.ok) {
         getLoginTutor();
-        alert("User Name Updated");
+        // alert("User Name Updated");
       } else {
         console.log(data);
       }
@@ -84,6 +84,7 @@ const edit = () => {
     const formData = new FormData();
     formData.append("location", location);
     formData.append("gender", gender);
+    formData.append("years_of_experience", yearOfExperience);
     formData.append("bio_data", bio);
     if (profilePic) {
       const profileFile: any = {
@@ -299,6 +300,28 @@ const edit = () => {
                   placeholder="Port Harcourt"
                   value={location}
                   onChangeText={setLocation}
+                  style={{
+                    padding: 12,
+                    borderRadius: 10,
+                    fontFamily: "AvenirRegular",
+                    fontSize: 15,
+                    borderColor: "rgba(85, 85, 85, 0.3)",
+                    borderWidth: 1,
+                    paddingRight: 45,
+                  }}
+                />
+                <FontAwesome6
+                  name="edit"
+                  size={20}
+                  color="#555555"
+                  style={{ position: "absolute", right: 15, top: "32%" }}
+                />
+              </View>
+              <View style={{ position: "relative" }}>
+                <TextInput
+                  placeholder="Port Harcourt"
+                  value={yearOfExperience}
+                  onChangeText={setYearOfExperience}
                   style={{
                     padding: 12,
                     borderRadius: 10,

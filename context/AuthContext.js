@@ -25,12 +25,19 @@ export const AuthContextProvider = ({ children }) => {
   const loadAuthData = async () => {
     const storedAuthTokens = await AsyncStorage.getItem("authTokens");
     const decodedAccess = await AsyncStorage.getItem("decodedAccess");
+    const userDetails = await AsyncStorage.getItem("userDetails");
+
     if (storedAuthTokens) {
       const tokens = JSON.parse(storedAuthTokens);
       setAuthTokens(tokens);
     }
     if (decodedAccess) {
-      setUser(decodedAccess);
+      const decode = JSON.parse(decodedAccess);
+      setUser(decode);
+    }
+    if (userDetails) {
+      const details = JSON.parse(userDetails);
+      setUserDetails(details);
     }
     setIsAuthenticated(true);
   };
@@ -93,6 +100,7 @@ export const AuthContextProvider = ({ children }) => {
 
       if (response.ok) {
         if (!isEqual(userDetails, data)) {
+          await AsyncStorage.setItem("userDetails", JSON.stringify(data));
           setUserDetails(data);
           console.log("User updated");
         } else {
@@ -124,6 +132,7 @@ export const AuthContextProvider = ({ children }) => {
 
       if (response.ok) {
         if (!isEqual(userDetails, data)) {
+          await AsyncStorage.setItem("userDetails", JSON.stringify(data));
           setUserDetails(data);
           console.log("User updated");
         } else {
