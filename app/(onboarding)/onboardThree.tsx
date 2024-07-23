@@ -1,4 +1,11 @@
-import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
 import React from "react";
 import { Link, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -16,97 +23,101 @@ const onboardThree = () => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="dark" />
-      <Animated.View
-        entering={FadeInLeft.duration(200).delay(200)}
-        exiting={FadeOutRight.duration(400).delay(200)}
-        style={{
-          flex: 1,
-          width: "100%",
-          gap: 15,
 
-          marginTop: 10,
-        }}
-      >
-        <TouchableOpacity onPress={skip}>
-          <Text
-            style={{
-              fontFamily: "AvenirRegular",
-              alignSelf: "flex-end",
-            }}
-          >
-            Skip
-          </Text>
-        </TouchableOpacity>
-
-        <Image
-          source={require("../../assets/images/onboard_img3.jpeg")}
+      <ScrollView style={{ flex: 1 }}>
+        <Animated.View
+          entering={FadeInLeft.duration(200).delay(200)}
+          exiting={FadeOutRight.duration(400).delay(200)}
           style={{
+            flex: 1,
             width: "100%",
-            objectFit: "cover",
-            height: 330,
-            borderRadius: 20,
-          }}
-        />
+            gap: 15,
 
-        <View
-          style={{
-            flexDirection: "column",
-            alignItems: "flex-start",
-            gap: 10,
+            marginTop: 10,
           }}
         >
-          <Image source={require("../../assets/images/Indicator 3.png")} />
-          <Text
-            style={{
-              fontFamily: "AvenirBold",
-              fontSize: 43,
-              lineHeight: 55,
-              marginBottom: 0,
-              color: "#0F0F0F",
-            }}
-          >
-            Empower Your Child's Future
-          </Text>
-          <Text
-            style={{
-              fontFamily: "AvenirRegular",
-              fontSize: 16,
-              lineHeight: 30,
-              color: "#555555",
-            }}
-          >
-            With Welearn, you're not just hiring a tutor – you're investing in
-            your child's future. Empower them with the tools and resources they
-            need to succeed academically.
-          </Text>
-        </View>
-      </Animated.View>
-
-      <Animated.View
-        entering={FadeInLeft.duration(200).delay(300)}
-        exiting={FadeOutRight.duration(200).delay(300)}
-      >
-        <Link replace href={"/(onboarding)/choose"} asChild>
-          <TouchableOpacity
-            style={{
-              alignItems: "center",
-              backgroundColor: "#00C0EA",
-              padding: 15,
-              borderRadius: 50,
-            }}
-          >
+          <TouchableOpacity onPress={skip}>
             <Text
               style={{
                 fontFamily: "AvenirRegular",
-                color: "#fff",
-                fontWeight: "600",
+                alignSelf: "flex-end",
               }}
             >
-              Login
+              Skip
             </Text>
           </TouchableOpacity>
-        </Link>
-      </Animated.View>
+
+          <Image
+            source={require("../../assets/images/onboard_img3.jpeg")}
+            style={{
+              width: "100%",
+              objectFit: "cover",
+              height: 330,
+              borderRadius: 20,
+            }}
+          />
+
+          <View
+            style={{
+              flexDirection: "column",
+              alignItems: "flex-start",
+              gap: 10,
+            }}
+          >
+            <Image source={require("../../assets/images/Indicator 3.png")} />
+            <Text
+              style={{
+                fontFamily: "AvenirBold",
+                fontSize: 43,
+                lineHeight: 55,
+                marginBottom: 0,
+                color: "#0F0F0F",
+              }}
+            >
+              Empower Your Child's Future
+            </Text>
+            <Text
+              style={{
+                fontFamily: "AvenirRegular",
+                fontSize: 16,
+                lineHeight: 30,
+                color: "#555555",
+              }}
+            >
+              With Welearn, you're not just hiring a tutor – you're investing in
+              your child's future. Empower them with the tools and resources
+              they need to succeed academically.
+            </Text>
+          </View>
+        </Animated.View>
+
+        <Animated.View
+          style={{ marginTop: 30 }}
+          entering={FadeInLeft.duration(200).delay(300)}
+          exiting={FadeOutRight.duration(200).delay(300)}
+        >
+          <Link replace href={"/(onboarding)/choose"} asChild>
+            <TouchableOpacity
+              style={{
+                alignItems: "center",
+                backgroundColor: "#00C0EA",
+                padding: 15,
+                borderRadius: 50,
+              }}
+            >
+              <Text
+                style={{
+                  fontFamily: "AvenirRegular",
+                  color: "#fff",
+                  fontWeight: "600",
+                }}
+              >
+                Finish
+              </Text>
+            </TouchableOpacity>
+          </Link>
+        </Animated.View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

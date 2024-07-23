@@ -35,6 +35,7 @@ const InstructorLayout = () => {
         screenOptions={{
           drawerActiveBackgroundColor: "#fff",
           drawerActiveTintColor: "#000",
+          headerBackgroundContainerStyle: { backgroundColor: "#FCFCFC" },
         }}
       >
         <Drawer.Screen
