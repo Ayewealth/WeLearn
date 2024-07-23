@@ -13,7 +13,8 @@
       "backgroundColor": "#00C0EA"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ayewealth.welearnapp"
     },
     "android": {
       "adaptiveIcon": {
