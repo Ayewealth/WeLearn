@@ -19,6 +19,7 @@ import Animated, { FadeInLeft, FadeOutRight } from "react-native-reanimated";
 import LottieView from "lottie-react-native";
 import { Link } from "expo-router";
 import { Feather } from "@expo/vector-icons";
+import useExitPrompt from "@/components/useExitPrompt";
 
 export default function HomeScreen() {
   const { top, bottom } = useSafeAreaInsets();
@@ -29,6 +30,8 @@ export default function HomeScreen() {
 
   const { loading, getLoginTutor, userDetails, tutorClass, getAllTutorClass } =
     useContext(AuthContext);
+
+  const { setIsPromptVisible } = useExitPrompt();
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -91,7 +94,7 @@ export default function HomeScreen() {
           >
             <View style={{ flex: 1, flexDirection: "column", gap: 5 }}>
               <Text style={{ fontFamily: "AvenirDemi", color: "#fff" }}>
-                Acount Verification Pending
+                Account Verification Pending
               </Text>
               <Text
                 style={{
@@ -101,8 +104,8 @@ export default function HomeScreen() {
                   lineHeight: 15,
                 }}
               >
-                Proceed to our office at No 1 Ikwerre Road, by Agip Junction by
-                Ada George for final verification
+                Proceed to our office at Mercy Mall, no 7 Trans- Woji Road Trans
+                Amadi for final verification
               </Text>
             </View>
             <View>
@@ -204,7 +207,7 @@ export default function HomeScreen() {
                       <Text
                         style={{ fontFamily: "AvenirRegular", fontSize: 13 }}
                       >
-                        {tutor.class_booked?.durtion} WEEKS
+                        {tutor.class_booked?.duration} WEEKS
                       </Text>
                       <Text style={{ fontFamily: "AvenirBold", fontSize: 16 }}>
                         {tutor.class_booked?.class_name}

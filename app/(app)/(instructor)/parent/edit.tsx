@@ -67,7 +67,7 @@ const edit = () => {
 
       if (response.ok) {
         getLoginTutor();
-        // alert("User Name Updated");
+        alert("User Name Updated");
       } else {
         console.log(data);
       }
@@ -112,7 +112,7 @@ const edit = () => {
 
       if (response.ok) {
         getLoginTutor();
-        alert("User Name Updated");
+        alert("User Data Updated");
       } else {
         console.log(data);
       }
@@ -319,7 +319,7 @@ const edit = () => {
               </View>
               <View style={{ position: "relative" }}>
                 <TextInput
-                  placeholder="Port Harcourt"
+                  placeholder="One"
                   value={yearOfExperience}
                   onChangeText={setYearOfExperience}
                   style={{

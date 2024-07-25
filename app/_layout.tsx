@@ -71,12 +71,12 @@ const InitialLayout = () => {
       router.replace("/(app)/(instructor)/");
     } else if (!isAuthenticated && !seenScreen) {
       router.replace("/(onboarding)/onboardOne");
-    } else if (!isAuthenticated && seenScreen && isParent) {
-      router.replace("/(auth)/(parent)/parentLogin");
-    } else if (!isAuthenticated && seenScreen && isInstructor) {
-      router.replace("/(auth)/(instructor)/instructorLogin");
     } else if (!isAuthenticated && seenScreen) {
       router.replace("/(onboarding)/choose");
+    } else if (!isAuthenticated && seenScreen && isInstructor) {
+      router.replace("/(auth)/(instructor)/instructorLogin");
+    } else if (!isAuthenticated && seenScreen && isParent) {
+      router.replace("/(auth)/(parent)/parentLogin");
     }
   }, [seenScreen, isAuthenticated, isInstructor, isParent]);
 

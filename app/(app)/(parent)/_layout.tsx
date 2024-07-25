@@ -1,7 +1,7 @@
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import React, { useContext, useEffect } from "react";
 import { Drawer } from "expo-router/drawer";
-import { useNavigation, useRouter } from "expo-router";
+import { Link, useNavigation, useRouter } from "expo-router";
 import { DrawerActions } from "@react-navigation/native";
 
 import CustomDrawerComponent from "@/components/CustomDrawerComponent";
@@ -58,30 +58,32 @@ const ParentLayout = () => {
               </TouchableOpacity>
             ),
             headerRight: () => (
-              <TouchableOpacity>
-                {userDetails && userDetails.profile_pic ? (
-                  <Image
-                    source={{ uri: userDetails.profile_pic }}
-                    style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: 50,
-                      marginRight: 20,
-                    }}
-                  />
-                ) : (
-                  <Image
-                    source={require("../../../assets/images/profile.png")}
-                    style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: 50,
-                      backgroundColor: "#00C0EA",
-                      marginRight: 20,
-                    }}
-                  />
-                )}
-              </TouchableOpacity>
+              <Link href="/(app)/(parent)/account" asChild>
+                <TouchableOpacity>
+                  {userDetails && userDetails.profile_pic ? (
+                    <Image
+                      source={{ uri: userDetails.profile_pic }}
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 50,
+                        marginRight: 20,
+                      }}
+                    />
+                  ) : (
+                    <Image
+                      source={require("../../../assets/images/profile.png")}
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 50,
+                        backgroundColor: "#00C0EA",
+                        marginRight: 20,
+                      }}
+                    />
+                  )}
+                </TouchableOpacity>
+              </Link>
             ),
           }}
         />

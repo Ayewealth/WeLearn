@@ -56,7 +56,7 @@ const choose = () => {
         </Text>
 
         <View style={{ flexDirection: "column", width: "100%", gap: 10 }}>
-          <Link replace href={"/(auth)/(parent)/parentLogin"} asChild>
+          <Link href={"/(auth)/(parent)/parentLogin"} asChild>
             <TouchableOpacity
               style={{
                 alignItems: "center",
@@ -77,7 +77,7 @@ const choose = () => {
             </TouchableOpacity>
           </Link>
 
-          <Link replace href={"/(auth)/(instructor)/instructorLogin"} asChild>
+          <Link href={"/(auth)/(instructor)/instructorLogin"} asChild>
             <TouchableOpacity
               style={{
                 alignItems: "center",

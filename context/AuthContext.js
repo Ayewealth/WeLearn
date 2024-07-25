@@ -180,16 +180,16 @@ export const AuthContextProvider = ({ children }) => {
   const logoutUser = async () => {
     await AsyncStorage.removeItem("isAuthenticated");
     await AsyncStorage.removeItem("authTokens");
+    await AsyncStorage.removeItem("isParent");
+    await AsyncStorage.removeItem("isInstructor");
 
-    if (isParent) {
-      navigate.replace("/(auth)/(parent)/parentLogin");
-    } else if (isInstructor) {
-      navigate.replace("/(auth)/(instructor)/instructorLogin");
-    }
+    navigate.replace("/(onboarding)/choose");
 
     setAuthTokens(null);
     setUser(null);
     setIsAuthenticated(false);
+    setIsParent(false);
+    setIsInstructor(false);
   };
 
   const contextData = {

@@ -30,6 +30,7 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 
 import { AuthContext } from "@/context/AuthContext";
 import { Link } from "expo-router";
+import useExitPrompt from "@/components/useExitPrompt";
 
 export default function HomeScreen() {
   const [toggleFilter, setToggleFilter] = useState(false);
@@ -45,6 +46,8 @@ export default function HomeScreen() {
 
   const { loading, tutors, getAllTutors, getLoginStudent, userDetails } =
     useContext(AuthContext);
+
+  const { setIsPromptVisible } = useExitPrompt();
 
   useEffect(() => {
     applyFiltersAndSearch();
