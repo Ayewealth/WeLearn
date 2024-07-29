@@ -55,6 +55,8 @@ const UnhiredTutorDetails = () => {
   const [showPicker2, setShowPicker2] = useState(false);
   const [showPicker3, setShowPicker3] = useState(false);
 
+  const [showaccount, setShowAccount] = useState(false);
+
   const { id } = useLocalSearchParams();
   const { top, bottom } = useSafeAreaInsets();
 
@@ -64,6 +66,11 @@ const UnhiredTutorDetails = () => {
   const apiKey = process.env.EXPO_PUBLIC_FLUTTER_KEY;
 
   const { authTokens, user } = useContext(AuthContext);
+
+  const toggleShowAccount = () => {
+    setShowAccount((prev) => !prev);
+    handleToggleHire();
+  };
 
   const toggleDatePicker1 = () => {
     setShowPicker1(!showPicker1);
@@ -156,47 +163,44 @@ const UnhiredTutorDetails = () => {
     }
   };
 
-  const handleOnRedirect = async (data: RedirectParams) => {
-    console.log(data);
+  const handleOnRedirect = async () => {
+    // console.log(data);
 
-    if (data.status === "successful") {
-      setLoading(true);
+    // if (data.status === "successful") {
+    setLoading(true);
 
-      try {
-        let response = await fetch(
-          "https://welearnapi.fun/api/class-bookings/",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${authTokens.access}`,
-            },
-            body: JSON.stringify({
-              location: location,
-              dayone: day1,
-              daytwo: day2,
-              daythree: day3,
-              timeone: time1,
-              timetwo: time2,
-              timethree: time3,
-              student: user.profile_id,
-              class_booked: DynamicTutor && DynamicTutor.classes[0]?.id,
-            }),
-          }
-        );
+    try {
+      let response = await fetch("https://welearnapi.fun/api/class-bookings/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authTokens.access}`,
+        },
+        body: JSON.stringify({
+          location: location,
+          dayone: day1,
+          daytwo: day2,
+          daythree: day3,
+          timeone: time1,
+          timetwo: time2,
+          timethree: time3,
+          student: user.profile_id,
+          class_booked: DynamicTutor && DynamicTutor.classes[0]?.id,
+        }),
+      });
 
-        const data = await response.json();
+      const data = await response.json();
 
-        if (response.status === 201) {
-          console.log(data);
-          router.push("/(app)/(parent)/instructor/paymentSuccess");
-        } else {
-          console.log(data);
-        }
-      } catch (error) {
-        console.log("Error", error);
+      if (response.status === 201) {
+        console.log(data);
+        router.push("/(app)/(parent)/instructor/paymentSuccess");
+      } else {
+        console.log(data);
       }
+    } catch (error) {
+      console.log("Error", error);
     }
+    // }
   };
 
   const generateTransactionRef = (length: number) => {
@@ -457,7 +461,28 @@ const UnhiredTutorDetails = () => {
                 )}
               </View>
 
-              <PayWithFlutterwave
+              <TouchableOpacity
+                onPress={toggleShowAccount}
+                style={{
+                  alignItems: "center",
+                  backgroundColor: "#00C0EA",
+                  padding: 15,
+                  borderRadius: 50,
+                  width: "100%",
+                }}
+              >
+                <Text
+                  style={{
+                    fontFamily: "AvenirRegular",
+                    color: "#fff",
+                    fontSize: 16,
+                  }}
+                >
+                  Proceed to Payment
+                </Text>
+              </TouchableOpacity>
+
+              {/* <PayWithFlutterwave
                 onRedirect={handleOnRedirect}
                 options={{
                   tx_ref: generateTransactionRef(10),
@@ -502,11 +527,122 @@ const UnhiredTutorDetails = () => {
                     </Text>
                   </TouchableOpacity>
                 )}
-              />
+              /> */}
             </Animated.View>
           </Animated.View>
         </TouchableWithoutFeedback>
       )}
+
+      {showaccount && (
+        <TouchableWithoutFeedback
+          style={{ flex: 1 }}
+          onPress={toggleShowAccount}
+        >
+          <Animated.View
+            entering={FadeInDown.duration(200).delay(200)}
+            exiting={FadeOutDown.duration(400).delay(400)}
+            style={{
+              flex: 1,
+              position: "absolute",
+              top: 0,
+              bottom: 0,
+              right: 0,
+              left: 0,
+
+              width: "100%",
+              paddingHorizontal: 20,
+              backgroundColor: "rgba(0,0,0,0.5)",
+              justifyContent: "center",
+              alignItems: "center",
+              zIndex: 10,
+            }}
+          >
+            <Animated.View
+              entering={FadeInLeft.duration(400).delay(400)}
+              exiting={FadeOutRight.duration(200).delay(200)}
+              style={{
+                flexDirection: "column",
+                // alignItems: "center",
+                gap: 10,
+
+                paddingVertical: 20,
+                paddingHorizontal: 20,
+                backgroundColor: "#fff",
+                borderRadius: 10,
+                width: "100%",
+              }}
+            >
+              <Text style={{ fontFamily: "AvenirBold", fontSize: 18 }}>
+                Kindly Make Your Payment.
+              </Text>
+              <Text
+                style={{
+                  fontFamily: "AvenirRegular",
+                  lineHeight: 15,
+                  fontSize: 12,
+                }}
+              >
+                You can make payment to any of this account number below:
+              </Text>
+
+              <View
+                style={{
+                  flexDirection: "column",
+                  gap: 7,
+                }}
+              >
+                <Text style={{ fontFamily: "AvenirBold", fontSize: 15 }}>
+                  UBA
+                </Text>
+                <Text style={{ fontFamily: "AvenirBold", fontSize: 16 }}>
+                  2090421952
+                </Text>
+                <Text style={{ fontFamily: "AvenirBold", fontSize: 16 }}>
+                  Amechi Blessing Nkwa
+                </Text>
+              </View>
+
+              <View style={{ flexDirection: "column", gap: 3, marginTop: 20 }}>
+                <Text style={{ fontFamily: "AvenirDemi", fontSize: 13 }}>
+                  Note:
+                </Text>
+                <Text
+                  style={{
+                    fontFamily: "AvenirRegular",
+                    lineHeight: 18,
+                    fontSize: 12,
+                  }}
+                >
+                  After you have made your payment please screenshot it and send
+                  to this whatsapp number: +234 813 113 3113
+                </Text>
+              </View>
+
+              <TouchableOpacity
+                onPress={handleOnRedirect}
+                style={{
+                  alignItems: "center",
+                  backgroundColor: "#00C0EA",
+                  padding: 13,
+                  borderRadius: 50,
+                  width: "100%",
+                }}
+              >
+                <Text
+                  style={{
+                    fontFamily: "AvenirRegular",
+                    color: "#fff",
+                    fontSize: 14,
+                  }}
+                >
+                  I Have Paid
+                </Text>
+              </TouchableOpacity>
+            </Animated.View>
+          </Animated.View>
+        </TouchableWithoutFeedback>
+      )}
+
       <SafeAreaView
         style={{
           flex: 1,

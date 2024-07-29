@@ -34,6 +34,12 @@ const edit = () => {
   const [yearOfExperience, setYearOfExperience] = useState(
     userDetails && userDetails ? userDetails.years_of_experience : ""
   );
+  const [lga, setLga] = useState(
+    userDetails && userDetails ? userDetails.LGA : ""
+  );
+  const [state, setState] = useState(
+    userDetails && userDetails ? userDetails.state : ""
+  );
   const [bio, setBio] = useState(
     userDetails && userDetails ? userDetails.bio_data : ""
   );
@@ -86,6 +92,8 @@ const edit = () => {
     formData.append("gender", gender);
     formData.append("years_of_experience", yearOfExperience);
     formData.append("bio_data", bio);
+    formData.append("LGA", lga);
+    formData.append("state", state);
     if (profilePic) {
       const profileFile: any = {
         name: profilePic.fileName,
@@ -319,9 +327,53 @@ const edit = () => {
               </View>
               <View style={{ position: "relative" }}>
                 <TextInput
-                  placeholder="One"
+                  placeholder="One Years Of Experience"
                   value={yearOfExperience}
                   onChangeText={setYearOfExperience}
+                  style={{
+                    padding: 12,
+                    borderRadius: 10,
+                    fontFamily: "AvenirRegular",
+                    fontSize: 15,
+                    borderColor: "rgba(85, 85, 85, 0.3)",
+                    borderWidth: 1,
+                    paddingRight: 45,
+                  }}
+                />
+                <FontAwesome6
+                  name="edit"
+                  size={20}
+                  color="#555555"
+                  style={{ position: "absolute", right: 15, top: "32%" }}
+                />
+              </View>
+              <View style={{ position: "relative" }}>
+                <TextInput
+                  placeholder="Your LGA"
+                  value={lga}
+                  onChangeText={setLga}
+                  style={{
+                    padding: 12,
+                    borderRadius: 10,
+                    fontFamily: "AvenirRegular",
+                    fontSize: 15,
+                    borderColor: "rgba(85, 85, 85, 0.3)",
+                    borderWidth: 1,
+                    paddingRight: 45,
+                  }}
+                />
+                <FontAwesome6
+                  name="edit"
+                  size={20}
+                  color="#555555"
+                  style={{ position: "absolute", right: 15, top: "32%" }}
+                />
+              </View>
+              <View style={{ position: "relative" }}>
+                <TextInput
+                  placeholder="Rivers State"
+                  value={state}
+                  onChangeText={setState}
                   style={{
                     padding: 12,
                     borderRadius: 10,

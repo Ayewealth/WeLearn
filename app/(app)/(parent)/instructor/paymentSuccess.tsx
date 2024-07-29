@@ -60,7 +60,7 @@ const paymentSuccess = () => {
           Your payment was made successfully. You can start classes from the
           selected day and time.
         </Text>
-        <Link replace href={"/(app)/(parent)/allHiredTutors"} asChild>
+        <Link replace href={"/(app)/(parent)/"} asChild>
           <TouchableOpacity
             style={{
               alignItems: "center",
