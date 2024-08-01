@@ -2,9 +2,11 @@ import { View, Text, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Animated, { FadeInLeft, FadeOutRight } from "react-native-reanimated";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 
 const paymentSuccess = () => {
+  const navigate = useRouter();
+
   return (
     <SafeAreaView
       style={{
@@ -60,27 +62,26 @@ const paymentSuccess = () => {
           Your payment was made successfully. You can start classes from the
           selected day and time.
         </Text>
-        <Link replace href={"/(app)/(parent)/"} asChild>
-          <TouchableOpacity
+        <TouchableOpacity
+          onPress={() => navigate.back()}
+          style={{
+            alignItems: "center",
+            backgroundColor: "#00C0EA",
+            padding: 15,
+            borderRadius: 50,
+            width: "100%",
+          }}
+        >
+          <Text
             style={{
-              alignItems: "center",
-              backgroundColor: "#00C0EA",
-              padding: 15,
-              borderRadius: 50,
-              width: "100%",
+              fontFamily: "AvenirRegular",
+              color: "#fff",
+              fontSize: 16,
             }}
           >
-            <Text
-              style={{
-                fontFamily: "AvenirRegular",
-                color: "#fff",
-                fontSize: 16,
-              }}
-            >
-              Back
-            </Text>
-          </TouchableOpacity>
-        </Link>
+            Back
+          </Text>
+        </TouchableOpacity>
       </Animated.View>
     </SafeAreaView>
   );
