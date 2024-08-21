@@ -132,8 +132,13 @@ const edit = () => {
   };
 
   const handleSubmit = async () => {
-    updateName();
-    updateLocation();
+    let shouldUpdateName = name !== (userDetails && userDetails.user?.name);
+
+    if (shouldUpdateName) {
+      await updateName();
+    } else {
+      await updateLocation();
+    }
   };
 
   const { top, bottom } = useSafeAreaInsets();
@@ -284,7 +289,7 @@ const edit = () => {
               />
               <View style={{ position: "relative" }}>
                 <TextInput
-                  placeholder="Male"
+                  placeholder="Male/Female"
                   value={gender}
                   onChangeText={setGender}
                   style={{
@@ -305,7 +310,7 @@ const edit = () => {
               </View>
               <View style={{ position: "relative" }}>
                 <TextInput
-                  placeholder="Port Harcourt"
+                  placeholder="Your Location"
                   value={location}
                   onChangeText={setLocation}
                   style={{
@@ -327,7 +332,7 @@ const edit = () => {
               </View>
               <View style={{ position: "relative" }}>
                 <TextInput
-                  placeholder="One Years Of Experience"
+                  placeholder="Years Of Experience"
                   value={yearOfExperience}
                   onChangeText={setYearOfExperience}
                   style={{
@@ -371,7 +376,7 @@ const edit = () => {
               </View>
               <View style={{ position: "relative" }}>
                 <TextInput
-                  placeholder="Rivers State"
+                  placeholder="Your State"
                   value={state}
                   onChangeText={setState}
                   style={{

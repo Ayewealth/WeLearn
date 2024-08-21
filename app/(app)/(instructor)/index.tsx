@@ -101,11 +101,11 @@ export default function HomeScreen() {
                   fontFamily: "AvenirRegular",
                   color: "#fff",
                   fontSize: 12,
-                  lineHeight: 15,
+                  lineHeight: 20,
                 }}
               >
                 Proceed to our office at Mercy Mall, no 7 Trans- Woji Road Trans
-                Amadi for final verification
+                Amadi for final verification.Most Importantly please complete your profile with a clear profile image.
               </Text>
             </View>
             <View>

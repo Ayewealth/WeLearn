@@ -591,14 +591,14 @@ const UnhiredTutorDetails = () => {
                   gap: 7,
                 }}
               >
-                <Text style={{ fontFamily: "AvenirBold", fontSize: 15 }}>
-                  UBA
+                <Text style={{ fontFamily: "AvenirBold", fontSize: 16 }}>
+                  First Bank
                 </Text>
                 <Text style={{ fontFamily: "AvenirBold", fontSize: 16 }}>
-                  2090421952
+                  2045372607
                 </Text>
                 <Text style={{ fontFamily: "AvenirBold", fontSize: 16 }}>
-                  Amechi Blessing Nkwa
+                  Axel & Alex Educational services ltd
                 </Text>
               </View>
 
