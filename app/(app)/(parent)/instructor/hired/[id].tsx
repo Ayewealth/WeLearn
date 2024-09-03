@@ -81,6 +81,7 @@ const HiredTutors = () => {
       );
 
       const data = await response.json();
+      console.log(data.allBookings[0].isPayed);
 
       if (response.ok) {
         if (!isEqual(DynamicTutor, data)) {
@@ -348,12 +349,8 @@ const HiredTutors = () => {
                     "Empty"}
                 </Text>
                 <Entypo name="dot-single" size={18} color="#555555" />
-                <Text
-                  style={{
-                    fontFamily: "AvenirDemi",
-                    color: "#00C0EA",
-                  }}
-                >
+
+                <Text style={{ fontFamily: "AvenirDemi", color: "#00C0EA" }}>
                   Hired
                 </Text>
               </View>
@@ -386,7 +383,7 @@ const HiredTutors = () => {
                   fontSize: 14,
                 }}
               >
-                {DynamicTutor && DynamicTutor.classes[0]?.durtion} WEEKS
+                {DynamicTutor && DynamicTutor.classes[0]?.duration}
               </Text>
             </View>
             <Text

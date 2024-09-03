@@ -51,10 +51,6 @@ const UnhiredTutorDetails = () => {
   const [time2, setTime2] = useState("");
   const [time3, setTime3] = useState("");
 
-  const [showPicker1, setShowPicker1] = useState(false);
-  const [showPicker2, setShowPicker2] = useState(false);
-  const [showPicker3, setShowPicker3] = useState(false);
-
   const [showaccount, setShowAccount] = useState(false);
 
   const { id } = useLocalSearchParams();
@@ -65,63 +61,11 @@ const UnhiredTutorDetails = () => {
 
   const apiKey = process.env.EXPO_PUBLIC_FLUTTER_KEY;
 
-  const { authTokens, user } = useContext(AuthContext);
+  const { authTokens, user, getAllTutors } = useContext(AuthContext);
 
   const toggleShowAccount = () => {
     setShowAccount((prev) => !prev);
     handleToggleHire();
-  };
-
-  const toggleDatePicker1 = () => {
-    setShowPicker1(!showPicker1);
-  };
-  const toggleDatePicker2 = () => {
-    setShowPicker2(!showPicker2);
-  };
-  const toggleDatePicker3 = () => {
-    setShowPicker3(!showPicker3);
-  };
-
-  const PickerOnChange1 = ({ type }: any, selectedDate: any) => {
-    if (type == "set") {
-      const currentDate = selectedDate;
-      setDate(currentDate);
-
-      if (Platform.OS === "android") {
-        toggleDatePicker1();
-        setTime1(currentDate.toDateString());
-      }
-    } else {
-      toggleDatePicker1();
-    }
-  };
-
-  const PickerOnChange2 = ({ type }: any, selectedDate: any) => {
-    if (type == "set") {
-      const currentDate = selectedDate;
-      setDate(currentDate);
-
-      if (Platform.OS === "android") {
-        toggleDatePicker2();
-        setTime2(currentDate.toDateString());
-      }
-    } else {
-      toggleDatePicker2();
-    }
-  };
-
-  const PickerOnChange3 = ({ type }: any, selectedDate: any) => {
-    if (type == "set") {
-      const currentDate = selectedDate;
-      setDate(currentDate);
-
-      if (Platform.OS === "android") {
-        toggleDatePicker3();
-        setTime3(currentDate.toDateString());
-      }
-    } else {
-      toggleDatePicker3();
-    }
   };
 
   const DayDataList = [
@@ -131,6 +75,13 @@ const UnhiredTutorDetails = () => {
     { key: "4", value: "THURSDAY" },
     { key: "5", value: "FRIDAY" },
     { key: "6", value: "SATURDAY" },
+  ];
+
+  const TimeDataList = [
+    { key: "1", value: "10am-12pm" },
+    { key: "2", value: "12pm-2pm" },
+    { key: "3", value: "2pm-4pm" },
+    { key: "4", value: "4pm-6pm" },
   ];
 
   const getDynamicTutor = async () => {
@@ -185,20 +136,27 @@ const UnhiredTutorDetails = () => {
           timetwo: time2,
           timethree: time3,
           student: user.profile_id,
+          instructor: DynamicTutor && DynamicTutor?.id,
           class_booked: DynamicTutor && DynamicTutor.classes[0]?.id,
         }),
       });
 
       const data = await response.json();
+      console.log(data);
 
       if (response.status === 201) {
         console.log(data);
+        setLocation("");
+        getAllTutors();
         router.push("/(app)/(parent)/instructor/paymentSuccess");
       } else {
         console.log(data);
+        alert(data.message);
       }
     } catch (error) {
       console.log("Error", error);
+    } finally {
+      setLoading(false);
     }
     // }
   };
@@ -309,6 +267,7 @@ const UnhiredTutorDetails = () => {
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
+                  justifyContent: "center",
                   gap: 10,
                   width: "100%",
                 }}
@@ -327,40 +286,26 @@ const UnhiredTutorDetails = () => {
                   }}
                 />
 
-                {showPicker1 && (
-                  <DateTimePicker
-                    mode="time"
-                    display="spinner"
-                    value={date}
-                    onChange={PickerOnChange1}
-                    style={{ backgroundColor: "#fff", marginTop: -10 }}
-                  />
-                )}
-                {!showPicker1 && (
-                  <Pressable style={{ flex: 1 }} onPress={PickerOnChange1}>
-                    <TextInput
-                      placeholder="Time 1"
-                      style={{
-                        borderRadius: 10,
-                        borderWidth: 1,
-                        borderColor: "rgba(85, 85, 85, 0.3)",
-                        fontFamily: "AvenirRegular",
-                        padding: 13,
-                        color: "#000",
-                      }}
-                      value={time1}
-                      onChangeText={setTime1}
-                      editable={false}
-                      onPressIn={toggleDatePicker1}
-                    />
-                  </Pressable>
-                )}
+                <SelectList
+                  setSelected={(val: any) => setTime1(val)}
+                  data={TimeDataList}
+                  save="value"
+                  placeholder="Time 1"
+                  search={false}
+                  boxStyles={{
+                    borderRadius: 10,
+                    borderColor: "rgba(85, 85, 85, 0.3)",
+                    padding: 13,
+                    paddingVertical: 17,
+                  }}
+                />
               </View>
 
               <View
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
+                  justifyContent: "center",
                   gap: 10,
                   width: "100%",
                 }}
@@ -379,40 +324,26 @@ const UnhiredTutorDetails = () => {
                   }}
                 />
 
-                {showPicker2 && (
-                  <DateTimePicker
-                    mode="time"
-                    display="spinner"
-                    value={date}
-                    onChange={PickerOnChange2}
-                    style={{ backgroundColor: "#fff", marginTop: -10 }}
-                  />
-                )}
-                {!showPicker2 && (
-                  <Pressable style={{ flex: 1 }} onPress={PickerOnChange2}>
-                    <TextInput
-                      placeholder="Time 2"
-                      style={{
-                        borderRadius: 10,
-                        borderWidth: 1,
-                        borderColor: "rgba(85, 85, 85, 0.3)",
-                        fontFamily: "AvenirRegular",
-                        padding: 13,
-                        color: "#000",
-                      }}
-                      value={time2}
-                      onChangeText={setTime2}
-                      editable={false}
-                      onPressIn={toggleDatePicker2}
-                    />
-                  </Pressable>
-                )}
+                <SelectList
+                  setSelected={(val: any) => setTime2(val)}
+                  data={TimeDataList}
+                  save="value"
+                  placeholder="Time 2"
+                  search={false}
+                  boxStyles={{
+                    borderRadius: 10,
+                    borderColor: "rgba(85, 85, 85, 0.3)",
+                    padding: 13,
+                    paddingVertical: 17,
+                  }}
+                />
               </View>
 
               <View
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
+                  justifyContent: "center",
                   gap: 10,
                   width: "100%",
                 }}
@@ -431,34 +362,19 @@ const UnhiredTutorDetails = () => {
                   }}
                 />
 
-                {showPicker3 && (
-                  <DateTimePicker
-                    mode="time"
-                    display="spinner"
-                    value={date}
-                    onChange={PickerOnChange3}
-                    style={{ backgroundColor: "#fff", marginTop: -10 }}
-                  />
-                )}
-                {!showPicker3 && (
-                  <Pressable style={{ flex: 1 }} onPress={PickerOnChange3}>
-                    <TextInput
-                      placeholder="Time 3"
-                      style={{
-                        borderRadius: 10,
-                        borderWidth: 1,
-                        borderColor: "rgba(85, 85, 85, 0.3)",
-                        fontFamily: "AvenirRegular",
-                        padding: 13,
-                        color: "#000",
-                      }}
-                      value={time3}
-                      onChangeText={setTime3}
-                      editable={false}
-                      onPressIn={toggleDatePicker3}
-                    />
-                  </Pressable>
-                )}
+                <SelectList
+                  setSelected={(val: any) => setTime3(val)}
+                  data={TimeDataList}
+                  save="value"
+                  placeholder="Time 3"
+                  search={false}
+                  boxStyles={{
+                    borderRadius: 10,
+                    borderColor: "rgba(85, 85, 85, 0.3)",
+                    padding: 13,
+                    paddingVertical: 17,
+                  }}
+                />
               </View>
 
               <TouchableOpacity
@@ -769,17 +685,23 @@ const UnhiredTutorDetails = () => {
             </Text>
             <View style={{ flexDirection: "column", gap: 10 }}>
               <View style={{ flexDirection: "row", gap: 5 }}>
+                <Text style={{ fontFamily: "AvenirRegular" }}>Duration</Text>
+                <Text style={{ fontFamily: "AvenirDemi", fontSize: 15 }}>
+                  {(DynamicTutor && DynamicTutor.classes[0]?.duration) || "0"}{" "}
+                </Text>
+              </View>
+              <View style={{ flexDirection: "row", gap: 5 }}>
                 <Text style={{ fontFamily: "AvenirRegular" }}>Trained</Text>
                 <Text style={{ fontFamily: "AvenirDemi", fontSize: 15 }}>
                   {(DynamicTutor && DynamicTutor.number_of_trained_students) ||
-                    "N/A"}{" "}
+                    "0"}{" "}
                   Users
                 </Text>
               </View>
               <View style={{ flexDirection: "row", gap: 5 }}>
                 <Text style={{ fontFamily: "AvenirRegular" }}>Experience</Text>
                 <Text style={{ fontFamily: "AvenirDemi", fontSize: 15 }}>
-                  {(DynamicTutor && DynamicTutor.years_of_experience) || "N/A"}{" "}
+                  {(DynamicTutor && DynamicTutor.years_of_experience) || "0"}{" "}
                   Years
                 </Text>
               </View>

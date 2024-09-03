@@ -19,7 +19,7 @@ import AuthHeader from "@/components/AuthHeader";
 import Animated, { FadeInLeft, FadeOutRight } from "react-native-reanimated";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const CELL_COUNT = 4;
+const CELL_COUNT = 6;
 const otp = () => {
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
@@ -245,9 +245,9 @@ const styles = StyleSheet.create({
   cell: {
     alignItems: "center",
     justifyContent: "center",
-    padding: 9,
-    width: 60,
-    height: 60,
+    padding: 5,
+    width: 45,
+    height: 45,
     lineHeight: 38,
     fontSize: 20,
     borderWidth: 1,

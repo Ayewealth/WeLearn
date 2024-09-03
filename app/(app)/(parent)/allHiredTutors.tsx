@@ -365,14 +365,25 @@ const allHiredTutors = () => {
                             {tutor.class_booked?.class_name || "Empty"}
                           </Text>
                           <Entypo name="dot-single" size={18} color="#555555" />
-                          <Text
-                            style={{
-                              fontFamily: "AvenirDemi",
-                              color: "#00C0EA",
-                            }}
-                          >
-                            Hired
-                          </Text>
+                          {tutor.isPayed !== null ? (
+                            <Text
+                              style={{
+                                fontFamily: "AvenirDemi",
+                                color: "#00C0EA",
+                              }}
+                            >
+                              Hired
+                            </Text>
+                          ) : (
+                            <Text
+                              style={{
+                                fontFamily: "AvenirDemi",
+                                color: "#00C0EA",
+                              }}
+                            >
+                              Pending
+                            </Text>
+                          )}
                         </View>
                       </View>
                     </View>
@@ -391,6 +402,7 @@ const allHiredTutors = () => {
                       asChild
                     >
                       <TouchableOpacity
+                        disabled={tutor.isPayed === null}
                         style={{
                           alignItems: "center",
                           borderColor: "#00C0EA",
