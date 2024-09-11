@@ -40,6 +40,12 @@ const HiredTutors = () => {
 
   const { authTokens, user, userDetails } = useContext(AuthContext);
 
+  const instructor = userDetails?.hiredInstructors.find(
+    (instructor: { instructor: { id: any } }) =>
+      instructor.instructor.id === parseInt(id)
+  );
+  const classBookedId = instructor ? instructor.id : null;
+
   function formatDate(dateString: string): string {
     const date = new Date(dateString);
 
@@ -115,7 +121,8 @@ const HiredTutors = () => {
       if (response.ok) {
         const filteredRemarks = data.filter(
           (remark: any) =>
-            remark.instructor == id && remark.student === user.profile_id
+            remark.booked_clasd === classBookedId &&
+            remark.student === user.profile_id
         );
 
         if (!isEqual(remarks, filteredRemarks)) {
@@ -146,8 +153,9 @@ const HiredTutors = () => {
             Authorization: `Bearer ${authTokens.access}`,
           },
           body: JSON.stringify({
-            instructor: id,
+            booked_clasd: classBookedId,
             student: user.profile_id,
+            instructor: id,
             content: remark,
           }),
         }

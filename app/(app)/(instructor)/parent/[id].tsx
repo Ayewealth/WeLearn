@@ -41,11 +41,16 @@ const Student = () => {
 
   const { authTokens, user, userDetails } = useContext(AuthContext);
 
+  const student = userDetails?.allBookings.find(
+    (student: { student: { id: any } }) => student.student.id === parseInt(id)
+  );
+  const classBookedId = student ? student.id : null;
+
   const classData =
     DynamicTutor &&
     DynamicTutor.hiredInstructors.find(
-      (tutor: { class_booked: { instructor: { id: any } } }) =>
-        tutor.class_booked?.instructor?.id == user?.profile_id
+      (tutor: { instructor: { id: any } }) =>
+        tutor.instructor.id == user?.profile_id
     );
 
   function formatDate(dateString: string): string {
@@ -122,7 +127,8 @@ const Student = () => {
       if (response.ok) {
         const filteredRemarks = data.filter(
           (remark: any) =>
-            remark?.student == id && remark?.instructor === user?.profile_id
+            remark?.booked_clasd === classBookedId &&
+            remark?.instructor === user?.profile_id
         );
 
         if (!isEqual(remarks, filteredRemarks)) {
@@ -153,6 +159,7 @@ const Student = () => {
             Authorization: `Bearer ${authTokens.access}`,
           },
           body: JSON.stringify({
+            booked_clasd: classBookedId,
             instructor: user?.profile_id,
             student: id,
             content: remark,
@@ -363,7 +370,7 @@ const Student = () => {
         >
           <View>
             <Text style={{ fontFamily: "AvenirRegular", fontSize: 13 }}>
-              {classData?.class_booked?.durtion} WEEKS
+              {classData?.class_booked?.duration} WEEKS
             </Text>
             <Text style={{ fontFamily: "AvenirBold", fontSize: 16 }}>
               {classData?.class_booked?.class_name}
@@ -375,28 +382,28 @@ const Student = () => {
             <View style={{ flexDirection: "column", gap: 10 }}>
               <View style={{ flexDirection: "row", gap: 5 }}>
                 <Text style={{ fontFamily: "AvenirRegular" }}>
-                  {(DynamicTutor && DynamicTutor.dayone) || "N/A"}
+                  {classData?.dayone || "N/A"}
                 </Text>
                 <Text style={{ fontFamily: "AvenirDemi", fontSize: 15 }}>
-                  {(DynamicTutor && DynamicTutor.timeone) || "N/A"}
+                  {classData?.timeone || "N/A"}
                 </Text>
               </View>
               <View style={{ flexDirection: "row", gap: 5 }}>
                 <Text style={{ fontFamily: "AvenirRegular" }}>
-                  {(DynamicTutor && DynamicTutor.daytwo) || "N/A"}
+                  {classData?.daytwo || "N/A"}
                 </Text>
                 <Text style={{ fontFamily: "AvenirDemi", fontSize: 15 }}>
-                  {(DynamicTutor && DynamicTutor.timetwo) || "N/A"}
+                  {classData?.timetwo || "N/A"}
                 </Text>
               </View>
               <View style={{ flexDirection: "row", gap: 5 }}>
                 <Text style={{ fontFamily: "AvenirRegular" }}>
-                  {(DynamicTutor && DynamicTutor.daythree) || "N/A"}
+                  {classData?.daythree || "N/A"}
                 </Text>
                 <Text
                   style={{ fontFamily: "AvenirDemi", fontSize: 15, flex: 1 }}
                 >
-                  {(DynamicTutor && DynamicTutor.timethree) || "N/A"}
+                  {classData?.timethree || "N/A"}
                 </Text>
               </View>
             </View>

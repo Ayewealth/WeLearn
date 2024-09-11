@@ -55,7 +55,6 @@ const otp = () => {
       const data = await response.json();
 
       if (response.ok || response.status === 200) {
-        alert(data.message);
         router.replace("/(auth)/(instructor)/success");
       } else {
         alert(data.message);
