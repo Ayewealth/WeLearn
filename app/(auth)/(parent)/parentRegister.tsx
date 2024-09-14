@@ -54,7 +54,7 @@ const parentRegister = () => {
   const closeAlert = () => {
     setAlert(false);
     if (success) {
-      router.push("/(auth)/(parent)/otp");
+      router.push("/(auth)/(parent)/parentLogin");
     }
   };
 

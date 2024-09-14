@@ -53,7 +53,7 @@ const instructorRegister = () => {
   const closeAlert = () => {
     setAlert(false);
     if (success) {
-      router.push("/(auth)/(instructor)/otp");
+      router.push("/(auth)/(instructor)/instructorLogin");
     }
   };
 
